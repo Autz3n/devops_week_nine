@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
         
       - name: Application Version
         id: semver-app
@@ -40,13 +42,6 @@ jobs:
             .
           docker push ghcr.io/$REPO_NAME --all-tags
           
-      - name: Delete existing release
-        continue-on-error: true
-        run: |
-          gh release delete ${{ steps.semver-app.outputs.version }} --yes
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
       - name: Create release notes 
         uses: ncipollo/release-action@v1
         with:
@@ -64,7 +59,7 @@ jobs:
           key: ${{ secrets.STAGING_SERVER_SSH_KEY }}
           source: "docker-compose.yaml"
           target: dowa/
-          
+        
       - name: Run Docker Compose on staging server
         uses: appleboy/ssh-action@v1.2.1
         with:
