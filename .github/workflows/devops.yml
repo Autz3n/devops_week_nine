@@ -40,6 +40,13 @@ jobs:
             .
           docker push ghcr.io/$REPO_NAME --all-tags
           
+      - name: Delete existing release
+        continue-on-error: true
+        run: |
+          gh release delete ${{ steps.semver-app.outputs.version }} --yes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
       - name: Create release notes 
         uses: ncipollo/release-action@v1
         with:
