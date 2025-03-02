@@ -64,7 +64,7 @@ jobs:
         uses: appleboy/ssh-action@v1.2.1
         with:
           host: ${{ vars.STAGING_SERVER_IP }}
-          username: ${{ vars.STAGING_SERVER_USERNAME }}
+          username: ${{ vars.STAGING_SERVER_USERNAME }} 
           key: ${{ secrets.STAGING_SERVER_SSH_KEY }}
           script: |
             cd dowa
